@@ -6,7 +6,7 @@ statistical forecasting layer and a narrowly-scoped LLM regime classifier —
 built, backtested, and containerized for continuous cloud deployment.
 
 **Status**: paper-trading / simulation only. No real capital is at risk in
-this repository's current configuration — see [Evaluation](#evaluation--current-status).
+this repository's current configuration.
 
 ---
 
