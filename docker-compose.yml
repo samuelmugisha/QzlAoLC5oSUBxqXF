@@ -1,0 +1,22 @@
+services:
+  trading-agent:
+    build: .
+    container_name: bitcoin-trading-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - trading-data:/app/data
+      - trading-config:/app/config
+      # If you're using the Google Sheet config integration, mount the
+      # service account JSON read-only rather than baking it into the image:
+      # - ./secrets/service_account.json:/app/config/service_account.json:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  trading-data:
+  trading-config:
