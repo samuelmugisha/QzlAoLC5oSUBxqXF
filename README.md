@@ -96,8 +96,8 @@ flowchart TD
     A7 -.->|read every cycle| B2
 ```
 
-1. **Once a day**, the regime job pulls daily candles, computes ATR, runs an ARIMA forecast, and — if an LLM provider is configured: asks it to classify the regime from a small numeric feature snapshot. The result (rule-based or LLM-nudged) is written to a single overrides file.
-2. **Every 30 minutes**, the trading cycle fetches fresh intraday price/ATR, reads whatever the regime job last wrote, and asks `StrategyManager` for a decision. A drawdown check runs first — if the portfolio has lost more than its configured threshold, everything pauses and an alert fires, regardless of what the strategy would otherwise do.
+1. **Once a day**, the regime job pulls daily candles, computes ATR, runs an ARIMA forecast, and  if an LLM provider is configured: asks it to classify the regime from a small numeric feature snapshot. The result (rule-based or LLM-nudged) is written to a single overrides file.
+2. **Every 30 minutes**, the trading cycle fetches fresh intraday price/ATR, reads whatever the regime job last wrote, and asks `StrategyManager` for a decision. A drawdown check runs first if the portfolio has lost more than its configured threshold, everything pauses and an alert fires, regardless of what the strategy would otherwise do.
 3. Any resulting DCA buy, swing entry, or stop-loss exit is executed against the paper broker and reported over Telegram.
 4. The **exact same `evaluate_hybrid()` call** backs the backtest engine, so validation results reflect the live trading logic, not a parallel reimplementation.
 
