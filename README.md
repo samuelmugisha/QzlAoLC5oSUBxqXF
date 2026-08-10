@@ -57,34 +57,6 @@ stop-loss.
 
 <center> <img src="bitcoin_trading_agent_architecture.jpg" alt="System Architectural diagram" width="900"></center>
 
-Two independent clocks, one shared state directory, three layered safety
-mechanisms (per-trade stop-loss, portfolio drawdown breaker, schema-validated
-LLM fallback). Full design rationale — including why the LLM is scoped the
-way it is — is in [`bitcoin_trading_agent_tutorial.md`](./bitcoin_trading_agent_tutorial.md).
-
-
-```
-                    ┌─────────────────────────┐
-                    │   Daily regime job       │   once/day, 00:05 UTC
-                    │   (daily candles, ARIMA, │
-                    │    optional LLM call)    │
-                    └───────────┬─────────────┘
-                                │ writes
-                                ▼
-                    runtime_overrides.json
-                                │ reads
-                                ▼
-┌──────────────┐    ┌─────────────────────────┐    ┌──────────────────┐
-│ Intraday data │──▶│  Trading cycle (30 min)  │──▶│  Paper broker /   │
-│ (30-min ATR)  │   │  DCA + swing + risk check│   │  trade log        │
-└──────────────┘    └───────────┬─────────────┘    └──────────────────┘
-                                │
-                    ┌───────────┴─────────────┐
-                    ▼                          ▼
-              Telegram alerts           Weekly Gmail report
-```
-
-
 
 ## Tech stack
 
