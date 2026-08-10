@@ -39,7 +39,7 @@ Most "AI trading bot" side projects either hand-wave the risk management or wire
 
 **Every component that touches money is deterministic and unit-testable.** The LLM's role is deliberately narrow: it classifies market regime from a handful of pre-computed indicators and can only ever *tighten* one eligibility flag, it never sizes a position, never moves a dollar amount, and never overrides a stop-loss.
 
-The system runs a **hybrid strategy** — Dollar-Cost Averaging as the always-on base layer, ATR-sized stop-losses for opportunistic swing entries, on top of a **two-speed architecture** that separates fast execution (every 30 minutes) from slow regime analysis (once a day), with a portfolio-level drawdown circuit breaker that can pause everything if losses exceed a configurable threshold.
+The system runs a **hybrid strategy:** Dollar-Cost Averaging as the always-on base layer, ATR-sized stop-losses for opportunistic swing entries, on top of a **two-speed architecture** that separates fast execution (every 30 minutes) from slow regime analysis (once a day), with a portfolio-level drawdown circuit breaker that can pause everything if losses exceed a configurable threshold.
 
 > **Status:** paper-trading / simulation only. No real capital is at risk in this repository's current configuration — see [Evaluation & Current Status](#-evaluation--current-status).
 
