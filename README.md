@@ -2,7 +2,7 @@
 
 # ₿ Bitcoin Trading Agent
 
-### An autonomous, risk-first crypto trading system — hybrid rule-based strategy, statistical forecasting, and a narrowly-scoped LLM regime classifier, running 24/7 behind a containerized scheduler.
+### An autonomous, risk-first crypto trading system with hybrid rule-based strategy, statistical forecasting, and a narrowly-scoped LLM regime classifier, running 24/7 behind a containerized scheduler.
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
@@ -35,11 +35,11 @@
 
 ## 🧭 Overview
 
-Most "AI trading bot" side projects either hand-wave the risk management or wire an LLM directly to order placement — a good way to lose money in a way that's hard to explain afterward. This project was built to do neither.
+Most "AI trading bot" side projects either hand-wave the risk management or wire an LLM directly to order placement: a good way to lose money in a way that's hard to explain afterward. This project was built to do neither.
 
-**Every component that touches money is deterministic and unit-testable.** The LLM's role is deliberately narrow: it classifies market regime from a handful of pre-computed indicators and can only ever *tighten* one eligibility flag — it never sizes a position, never moves a dollar amount, and never overrides a stop-loss.
+**Every component that touches money is deterministic and unit-testable.** The LLM's role is deliberately narrow: it classifies market regime from a handful of pre-computed indicators and can only ever *tighten* one eligibility flag, it never sizes a position, never moves a dollar amount, and never overrides a stop-loss.
 
-The system runs a **hybrid strategy** — Dollar-Cost Averaging as the always-on base layer, ATR-sized stop-losses for opportunistic swing entries — on top of a **two-speed architecture** that separates fast execution (every 30 minutes) from slow regime analysis (once a day), with a portfolio-level drawdown circuit breaker that can pause everything if losses exceed a configurable threshold.
+The system runs a **hybrid strategy** — Dollar-Cost Averaging as the always-on base layer, ATR-sized stop-losses for opportunistic swing entries, on top of a **two-speed architecture** that separates fast execution (every 30 minutes) from slow regime analysis (once a day), with a portfolio-level drawdown circuit breaker that can pause everything if losses exceed a configurable threshold.
 
 > **Status:** paper-trading / simulation only. No real capital is at risk in this repository's current configuration — see [Evaluation & Current Status](#-evaluation--current-status).
 
@@ -69,7 +69,7 @@ The same control panel also triggers a live trading cycle or the daily regime jo
 
 ## ⚙️ How It Works
 
-The system runs two independent loops on two different clocks, each answering the question suited to its own timeframe — sizing a stop-loss from *this morning's* volatility and deciding *this week's* regime don't need the same candle size.
+The system runs two independent loops on two different clocks, each answering the question suited to its own timeframe: sizing a stop-loss from *this morning's* volatility and deciding *this week's* regime don't need the same candle size.
 
 ```mermaid
 flowchart TD
@@ -96,7 +96,7 @@ flowchart TD
     A7 -.->|read every cycle| B2
 ```
 
-1. **Once a day**, the regime job pulls daily candles, computes ATR, runs an ARIMA forecast, and — if an LLM provider is configured — asks it to classify the regime from a small numeric feature snapshot. The result (rule-based or LLM-nudged) is written to a single overrides file.
+1. **Once a day**, the regime job pulls daily candles, computes ATR, runs an ARIMA forecast, and — if an LLM provider is configured: asks it to classify the regime from a small numeric feature snapshot. The result (rule-based or LLM-nudged) is written to a single overrides file.
 2. **Every 30 minutes**, the trading cycle fetches fresh intraday price/ATR, reads whatever the regime job last wrote, and asks `StrategyManager` for a decision. A drawdown check runs first — if the portfolio has lost more than its configured threshold, everything pauses and an alert fires, regardless of what the strategy would otherwise do.
 3. Any resulting DCA buy, swing entry, or stop-loss exit is executed against the paper broker and reported over Telegram.
 4. The **exact same `evaluate_hybrid()` call** backs the backtest engine, so validation results reflect the live trading logic, not a parallel reimplementation.
@@ -116,13 +116,13 @@ flowchart TD
 | | |
 |---|---|
 | 🛡️ **Hybrid strategy with guardrails** | DCA as the always-on base layer, ATR-sized stop-losses for swing entries, and a portfolio-level drawdown circuit breaker that pauses all new activity past a configurable loss threshold. |
-| ⏱️ **Two-speed architecture** | A 30-minute trading cycle decoupled from a once-daily regime/forecast recompute — each ATR calculation uses the candle granularity suited to the question it's answering. |
+| ⏱️ **Two-speed architecture** | A 30-minute trading cycle decoupled from a once-daily regime/forecast recompute: each ATR calculation uses the candle granularity suited to the question it's answering. |
 | 🤖 **LLM-assisted regime classification** | An optional, schema-validated call (Anthropic or OpenAI) that turns pre-computed indicators into a regime label and a logged rationale. It can only ever make the system *more* conservative — never loosen a stop, enlarge a position, or force a trade. A failed or malformed response degrades to the safe rule-based default, never to an unhandled exception. |
 | 📈 **Statistical forecasting** | ARIMA-based next-period return prediction, selected via walk-forward cross-validation against ES/AR/ARIMA candidates. |
 | 🔐 **Config/secrets separation** | Strategy parameters are hot-reloadable from a Google Sheet via an explicit allowlist; credentials live only in environment variables and are never reachable from the Sheet. |
 | 🔔 **Full observability** | Telegram alerts on every trade and risk event, a weekly Gmail summary, and an append-only audit log of every LLM call. |
-| 🧪 **Backtested against live code** | The backtest engine calls the identical `StrategyManager.evaluate_hybrid()` used in production — no parallel simulation logic to drift out of sync. |
-| 🖥️ **Interactive control panel** | A Streamlit UI for live monitoring, on-demand job triggers, backtesting, and system health checks — see [Live Interface](#-live-interface). |
+| 🧪 **Backtested against live code** | The backtest engine calls the identical `StrategyManager.evaluate_hybrid()` used in production, no parallel simulation logic to drift out of sync. |
+| 🖥️ **Interactive control panel** | A Streamlit UI for live monitoring, on-demand job triggers, backtesting, and system health checks: see [Live Interface](#-live-interface). |
 | 🐳 **Containerized** | Docker + docker-compose, with a persistent volume so trade history and the drawdown high-water mark survive restarts. |
 
 ---
