@@ -206,9 +206,9 @@ The planned next step is a real (non-paper) broker integration behind the same i
 
 ---
 
-## 💼 For Hiring Managers & Recruiters
+## 💼 Summary
 
-If you're reviewing this as part of a portfolio, here's what it's meant to demonstrate — beyond "an agent that trades Bitcoin":
+If you're reviewing this as part of a portfolio, here's what it's meant to demonstrate: beyond "an agent that trades Bitcoin":
 
 - **Time-series forecasting & model selection:** ARIMA/AR/ES compared via walk-forward cross-validation rather than a single in-sample fit, with the forecast's actual predictive weakness stated plainly rather than glossed over.
 - **Applied LLM integration with real guardrails:** structured prompting, strict schema validation, one-directional risk bounds (the model can decline a trade, never authorize one outside the deterministic clamps), and graceful degradation when a call fails, instead of an unconstrained "let the model decide" pattern.
