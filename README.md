@@ -21,6 +21,8 @@ market regime from a handful of pre-computed indicators and can only ever
 *tighten* one eligibility flag, never move a dollar amount or override a
 stop-loss.
 
+<center> <img src="data/SystemDiagram.jpg" alt="System Design Diagram" width="900"></center>
+
 ## Key features
 
 - **Hybrid strategy**: DCA as the always-on base layer, ATR-sized stop-losses
