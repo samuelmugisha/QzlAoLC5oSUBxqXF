@@ -189,7 +189,7 @@ docker compose up -d --build
 docker compose logs -f
 ```
 
-Leave `LLM_PROVIDER` blank in `.env` to run with rule-based thresholds only — the system behaves identically with or without an LLM configured, which was a deliberate design constraint, not an afterthought.
+Leave `LLM_PROVIDER` blank in `.env` to run with rule-based thresholds only, the system behaves identically with or without an LLM configured, which was a deliberate design constraint, not an afterthought.
 
 ---
 
@@ -210,12 +210,12 @@ The planned next step is a real (non-paper) broker integration behind the same i
 
 If you're reviewing this as part of a portfolio, here's what it's meant to demonstrate — beyond "an agent that trades Bitcoin":
 
-- **Time-series forecasting & model selection** — ARIMA/AR/ES compared via walk-forward cross-validation rather than a single in-sample fit, with the forecast's actual predictive weakness stated plainly rather than glossed over.
-- **Applied LLM integration with real guardrails** — structured prompting, strict schema validation, one-directional risk bounds (the model can decline a trade, never authorize one outside the deterministic clamps), and graceful degradation when a call fails, instead of an unconstrained "let the model decide" pattern.
-- **System design for reliability** — decoupled cadences for fast execution vs. slow regime analysis, idempotent state writes, a security-conscious config allowlist that keeps a remote Google Sheet from ever setting a secret, and defensive error handling around every external API call.
-- **Rigorous validation methodology** — backtesting against the *same code path* used live, paper trading before any consideration of real capital, and an explicit accounting of what paper trading does not model.
-- **Production engineering, not just a notebook** — the whole system is also a single narrated Jupyter notebook (`BitTradeAgent_updated.ipynb`) that builds every module in place, but it ships as installable packages, a container, a scheduler, and now an interactive UI — the kind of path a prototype actually takes to something operable.
-- **Judgment under ambiguity** — every place this system could have taken a shortcut (an LLM with unchecked authority, a backtest that quietly diverges from live logic, a config channel with no allowlist) is the place it explicitly didn't, and that choice is documented in the code, not just asserted here.
+- **Time-series forecasting & model selection:** ARIMA/AR/ES compared via walk-forward cross-validation rather than a single in-sample fit, with the forecast's actual predictive weakness stated plainly rather than glossed over.
+- **Applied LLM integration with real guardrails:** structured prompting, strict schema validation, one-directional risk bounds (the model can decline a trade, never authorize one outside the deterministic clamps), and graceful degradation when a call fails, instead of an unconstrained "let the model decide" pattern.
+- **System design for reliability:** decoupled cadences for fast execution vs. slow regime analysis, idempotent state writes, a security-conscious config allowlist that keeps a remote Google Sheet from ever setting a secret, and defensive error handling around every external API call.
+- **Rigorous validation methodology:** backtesting against the *same code path* used live, paper trading before any consideration of real capital, and an explicit accounting of what paper trading does not model.
+- **Production engineering, not just a notebook:** the whole system is also a single narrated Jupyter notebook (`BitTradeAgent_updated.ipynb`) that builds every module in place, but it ships as installable packages, a container, a scheduler, and now an interactive UI — the kind of path a prototype actually takes to something operable.
+- **Judgment under ambiguity:** every place this system could have taken a shortcut (an LLM with unchecked authority, a backtest that quietly diverges from live logic, a config channel with no allowlist) is the place it explicitly didn't, and that choice is documented in the code, not just asserted here.
 
 This project is part of a broader portfolio spanning time-series forecasting, applied ML, LLM-integrated systems, and computer vision. I'm glad to walk through any design decision above in more depth — reach out via the links below.
 
