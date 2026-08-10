@@ -21,7 +21,6 @@ market regime from a handful of pre-computed indicators and can only ever
 *tighten* one eligibility flag, never move a dollar amount or override a
 stop-loss.
 
-<center> <img src="data/SystemDiagram.jpg" alt="System Design Diagram" width="900"></center>
 
 ## Key features
 
@@ -55,6 +54,9 @@ stop-loss.
   trade history and the drawdown high-water mark survive restarts.
 
 ## Architecture
+
+<center> <img src="bitcoin_trading_agent_architecture.jpg" alt="System Architectural diagram" width="900"></center>
+
 
 ```
                     ┌─────────────────────────┐
