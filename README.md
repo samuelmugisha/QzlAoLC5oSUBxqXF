@@ -47,7 +47,7 @@ The system runs a **hybrid strategy:** Dollar-Cost Averaging as the always-on ba
 
 ## 🖥️ Live Interface
 
-A [Streamlit](https://streamlit.io/) control panel sits on top of the exact same modules the scheduler runs in production — no logic is duplicated between the UI and the trading engine.
+A [Streamlit](https://streamlit.io/) control panel sits on top of the exact same modules the scheduler runs in production. No logic is duplicated between the UI and the trading engine.
 
 <div align="center">
 <img src="assets/screenshots/dashboard.png" alt="Bitcoin Trading Agent — Streamlit dashboard showing live BTC price, daily and intraday ATR, and paper portfolio value" width="880">
