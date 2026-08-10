@@ -57,6 +57,11 @@ stop-loss.
 
 <center> <img src="bitcoin_trading_agent_architecture.jpg" alt="System Architectural diagram" width="900"></center>
 
+Two independent clocks, one shared state directory, three layered safety
+mechanisms (per-trade stop-loss, portfolio drawdown breaker, schema-validated
+LLM fallback). Full design rationale — including why the LLM is scoped the
+way it is — is in [`bitcoin_trading_agent_tutorial.md`](./bitcoin_trading_agent_tutorial.md).
+
 
 ```
                     ┌─────────────────────────┐
@@ -79,10 +84,7 @@ stop-loss.
               Telegram alerts           Weekly Gmail report
 ```
 
-Two independent clocks, one shared state directory, three layered safety
-mechanisms (per-trade stop-loss, portfolio drawdown breaker, schema-validated
-LLM fallback). Full design rationale — including why the LLM is scoped the
-way it is — is in [`bitcoin_trading_agent_tutorial.md`](./bitcoin_trading_agent_tutorial.md).
+
 
 ## Tech stack
 
