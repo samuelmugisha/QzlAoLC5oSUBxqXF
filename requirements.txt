@@ -6,3 +6,5 @@ statsmodels>=0.14
 gspread>=6.0
 google-auth>=2.30
 APScheduler>=3.10
+streamlit>=1.38
+altair>=5.0

@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+data/
+.env
+config/settings_cache.json
