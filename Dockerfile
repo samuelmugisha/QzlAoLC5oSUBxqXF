@@ -1,4 +1,12 @@
-# Bitcoin trading agent — production image
+# Bitcoin trading agent — combined scheduler + dashboard image
+#
+# Runs both the trading scheduler and the Streamlit dashboard in one
+# container (see docker-entrypoint.sh) so they share the same
+# filesystem: the dashboard reads the live portfolio/trade state the
+# scheduler is writing, not a disconnected copy. This matters on
+# DigitalOcean App Platform, where every separate component gets its
+# own isolated disk — a Worker + Web Service split can never see the
+# same trade history without external shared storage.
 FROM python:3.11-slim
 
 # System deps: none of the current modules need compiled extensions beyond
@@ -15,6 +23,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code.
 COPY src/ ./src/
 COPY scheduler.py .
+COPY streamlit_app.py .
+COPY docker-entrypoint.sh .
+RUN chmod +x docker-entrypoint.sh
 
 # Persistent state (portfolio, trade log, config cache, LLM audit log)
 # lives here — mount this as a named volume so a container restart or
@@ -27,8 +38,11 @@ RUN mkdir -p /app/data /app/config
 # never baked into the image. See .env.example for the full list.
 ENV PYTHONUNBUFFERED=1
 
-# Basic liveness signal: the scheduler process must be running.
-HEALTHCHECK --interval=5m --timeout=10s --start-period=30s --retries=3 \
-    CMD pgrep -f scheduler.py || exit 1
+# The platform (e.g. DigitalOcean App Platform) injects $PORT at
+# runtime; Streamlit binds to it in docker-entrypoint.sh. 8080 is the
+# fallback for local `docker run` / docker-compose.
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f "http://localhost:${PORT:-8080}/_stcore/health" || exit 1
 
-ENTRYPOINT ["python", "scheduler.py"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
